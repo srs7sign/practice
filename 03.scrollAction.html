@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html,body {margin: 0; padding: 0;}
+        body {height: 400vh;}
+        .before-load {overflow-y: hidden;}
+        .view-wrap {position: fixed; left: 0; top: 0;  width: 100%; height: 100%; }
+        .view-wrap .view-canvas {position: absolute; left: 50%; top: 50%; }
+
+    </style>
+
+</head>
+<body>
+    
+    <div class="before-load">
+        <div class="view-wrap">
+          <canvas class="view-canvas" width="1920" height="1080"></canvas>
+        </div>
+      </div>
+
+
+      <script>
+          (() => {
+                const viewInfo = {
+                    canvas: document.querySelector('.view-canvas'),
+                    context: document.querySelector('.view-canvas').getContext('2d'),
+                    imageCount: 128,
+                    images: [],
+                    progress: 0,
+                    currentFrame: 0,
+                };
+                function setView() {
+                    let viewImg;
+                    for (let i = 0; i < viewInfo.imageCount; i++) {
+                    let num = i + 1;
+                    let imgNum = num
+                    // let imgNum = num < 10 ? '00' + num : num;
+                    // if(num < 10 ){
+                    //     imgNum = '00' + num;
+                    // }else if(num < 100){
+                    //     imgNum = '0' + num;
+                    // }else{
+                    //     imgNum = num
+                    // }
+                    viewImg = new Image();
+                    viewImg.src = `img/img${imgNum}.webp`;
+                    viewInfo.images.push(viewImg);
+                    }
+                    document.body.classList.remove('before-load');
+                    const widthRatio = window.innerWidth / 1920;
+                    const heightRatio = window.innerHeight / 1080;
+                    if (widthRatio <= heightRatio) {
+                    viewInfo.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${widthRatio})`;
+                    } else {
+                    viewInfo.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+                    } // 브라우저 크기 비율에 따른 canvas 비율 변경
+                    viewImg.onload = function () {
+                    viewInfo.context.drawImage(viewInfo.images[0], 0, -300);
+                    };
+                    viewLoop();
+                }
+                function viewLoop() {
+                    viewInfo.progress = pageYOffset / (document.body.offsetHeight - window.innerHeight);
+                    if (viewInfo.progress < 0) {
+                    viewInfo.progress = 0;
+                    }
+                    if (viewInfo.progress > 1) {
+                    viewInfo.progress = 1;
+                    }
+                    viewInfo.currentFrame = Math.round((viewInfo.imageCount - 1) * viewInfo.progress);
+                    viewInfo.context.drawImage(viewInfo.images[viewInfo.currentFrame], 0, -300);
+                    requestAnimationFrame(viewLoop);
+                }
+                window.addEventListener('resize', setView);
+                window.addEventListener('load', setView);
+            })();
+
+      </script>
+</body>
+</html>
