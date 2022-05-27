@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drawImage</title>
+</head>
+
+<body>
+    <!-- 
+        01.DrawingOnCanvas 에 이어서 drawImage 정리
+
+        canvas에서 이미지 넣을때 사용함.
+        new Image 로 객체를 생성한 뒤 onload로 이미지를 로딩한 후에 캔버스에서 이미지를 그릴 수 있음
+
+     -->
+    <canvas id="myCanvas" width="300" height="200"></canvas>
+    <canvas id="myCanvas2" width="300" height="200"></canvas>
+
+    <script>
+        // 이미지 전체를 사용할 때.
+
+        var canvas = document.getElementById("myCanvas");
+        var context = canvas.getContext("2d");
+        var img = new Image();    //이미지 객체 생성 
+        img.src= "image/img01.jpg"; //code.jpg라는 이미지 파일을 로딩 시작  size 5568 * 3712
+
+        img.onload = function (){ //이미지 로딩 완료시 실행되는 함수
+            context.drawImage(img, 20, 20, 150, 150) //(20,20)을 중심으로 100*100의 사이즈로 이미지를 그림
+        }
+
+
+        // 이미지에서 특정 부분만을 사용하고 싶을 때.
+
+        var canvas_two = document.getElementById("myCanvas2");
+        var context_two = canvas_two.getContext("2d");
+        var img_two = new Image();    //이미지 객체 생성 
+        img_two.src = "image/img01.jpg";     //code.jpg라는 이미지 파일을 로딩 시작  size 5568 * 3712
+
+
+        img_two.onload = function (){  //이미지 로딩 완료시 실행되는 함수
+            //drawImage(img ,ix,iy,iw,ih,cx, cy,cw,ch)
+            // - img : 이미지 객체 
+			// - ix : 이미지 내에 있는 x 좌표 
+			// - iy : 이미지 내에 있는 y 좌표 
+			// - iw : 이미지 내에 있는 (x,y)를 중심으로 그려질 넓이 
+			// - ih: 이미지 내에 있는 (x,y)를 중심으로 그려질 높이 
+			// - cx : 캔버스의 x 좌표
+			// - cy : 캔버스의 y 좌표
+			// - cw : 캔버스 위에 그려질 이미지의  넓이
+			// - ch : 캔버스 위에 그려질 이미지의  높이
+
+            context_two.drawImage(img_two, 0, 0, 5000, 1000, 0, 0, canvas_two.width, canvas_two.height)
+            //이미지 비트맵에서 (30,30)을 중심으로 100*100 크기의 영역을 캔버스에 전체에 그림
+        }
+       
+    </script>
+
+
+    <!--참고 https: //devjhs.tistory.com/577 [키보드와 하루:티스토리] -->
+</body>
+
+</html>

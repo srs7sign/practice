@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing</title>
+</head>
+<body>
+    <!-- 220510 11:51 -->
+    <canvas id="myCanvas" width="200" height="100"></canvas>
+
+    <script>
+        var canvas = document.querySelector('#myCanvas')
+        var ctx = canvas.getContext("2d");  // getContext 
+        //getContext 은 value 값으로 2d, webgl, webgl2, bitmaprenderer // 3d 도 썻던거 같은데....??
+        // 2d 의 attribute 값 alpha, desynchronized, (Gecko only)willReadFrequently, (Blink only) storage
+        // storage 제외 전부 boolean 값.
+
+        ctx.fillStyle = "#f00"
+        // background
+        ctx.fillRect(0,0,150,75)
+        // fillRect(x,y,width,height)  x,y 는 기준점.
+
+        // 라인 그리기
+        ctx.moveTo(0, 0); // 시작점
+        ctx.lineTo(200, 100); // 끝점
+        ctx.stroke(); // 그리기 매서드
+        
+        // 원 그리기
+        ctx.beginPath(); // 경로시작
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        // x, y 는 원 중심의 x,y 좌표. r은 원의 반지름
+        // arc()를 사용하여 원을 만들려면 시작 각도를 0으로 설정하고 끝 각도를 2*Math.PI로 설정해야 한다.
+        ctx.stroke();
+
+
+        // 그라디언트 그리기   
+        // 그라디언트 생성     
+        var grd = ctx.createLinearGradient(0, 0, 200, 0); 
+        // createLinearGradient(x,y,x1,y1) 
+        // createRadialGradient(x,y,r,x1,y1,r1) 
+        grd.addColorStop(0, "red");
+        grd.addColorStop(1, "white");
+        //addColorStop() 메서드 - 색상 정지점과 그라디언트 위치를 지정
+
+        // 그라디언트 채우기
+        ctx.fillStyle = grd;
+        ctx.fillRect(10, 10, 150, 80);
+
+        // 텍스트 그리기
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        ctx.font = "30px Arial";
+        ctx.fillText("Hello World", 10, 50);
+
+        // 이미지 삽입
+        var img = document.getElementById("scream");
+        ctx.drawImage(img, 10, 10);
+
+
+        // 자세한 내용은 https://www.w3schools.com/graphics/canvas_reference.asp 에서!!
+    </script>
+</body>
+</html>
